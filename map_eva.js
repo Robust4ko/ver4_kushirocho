@@ -436,6 +436,17 @@ function drawRoute(origin, destination) {
     function (result, status) {
       if (status === google.maps.DirectionsStatus.OK) {
         directionsRenderer.setDirections(result);
+        
+        // Update distance/time from the actual route so the panel reflects the selected destination
+        if (result && result.routes && result.routes[0] && result.routes[0].legs && result.routes[0].legs.length) {
+          var leg = result.routes[0].legs[0];
+          if (leg.distance && typeof leg.distance.value === "number") {
+            lastDistanceMeters = leg.distance.value;
+          }
+          if (leg.duration && typeof leg.duration.text === "string") {
+            lastDurationText = leg.duration.text;
+          }
+        }
         if (latestDestination && lastDistanceMeters != null && lastDurationText != null) {
           const summary = (APP_LANG === "ja")
             ? `${latestDestination.name}（${lastDistanceMeters} m、約 ${lastDurationText}）`
