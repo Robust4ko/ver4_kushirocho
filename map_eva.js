@@ -94,7 +94,6 @@ function escapeHtml(str) {
 // ===== 地図初期化 =====
 function initMap() {
   const center = { lat: 43.00145, lng: 144.40550 };
-
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 15,
     center: center,
@@ -147,9 +146,16 @@ function loadDestinations() {
   return fetch("./destinations.json")
     .then((response) => response.json())
     .then((data) => {
-      destinations = data;
-      data.forEach((dest) => {
-        addCustomMarker(dest.location, dest.name, "./HB.svg", 34);
+       data.forEach((dest) => {
+        const structured = {
+        name: dest.name,
+          location: {
+            lat: dest.location?.lat ?? dest.lat,
+            lng: dest.location?.lng ?? dest.lng,
+          },
+        };
+        destinations.push(structured);
+      addCustomMarker(structured.location, structured.name, "./HB.svg", 34);
       });
     });
 }
