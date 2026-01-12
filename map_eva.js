@@ -94,6 +94,7 @@ function escapeHtml(str) {
 // ===== 地図初期化 =====
 function initMap() {
   const center = { lat: 43.00145, lng: 144.40550 };
+
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 15,
     center: center,
